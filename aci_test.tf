@@ -77,7 +77,7 @@ resource "aci_filter_entry" "https" {
 module "prod_app2" {
   source = "modules/prod_app2"
 
-  tenant        = "${aci_tenant.terraform_ten.id}"
+  tenant        = "${aci_tenant.terraform_ten.name}"
   vmm_domain_dn = "${var.vmm_domain_dn}"
 }
 
