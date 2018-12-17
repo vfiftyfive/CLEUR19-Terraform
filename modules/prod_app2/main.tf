@@ -1,3 +1,7 @@
+resource "aci_tenant" "tenant" {
+  name = "${var.tenant}"
+}
+
 resource "aci_vrf" "vrf" {
   tenant_dn = "${aci_tenant.tenant.id}"
   name      = "vrf"
@@ -21,7 +25,7 @@ resource "aci_application_profile" "app2" {
 }
 
 resource "aci_application_epg" "epg1" {
-  application_profile_dn = "${aci_application_profile.app1.id}"
+  application_profile_dn = "${aci_application_profile.app2.id}"
   name                   = "epg1"
   relation_fv_rs_bd      = "${aci_bridge_domain.bd.name}"
   relation_fv_rs_dom_att = ["${var.vmm_domain_dn}"]
@@ -29,7 +33,7 @@ resource "aci_application_epg" "epg1" {
 }
 
 resource "aci_application_epg" "epg2" {
-  application_profile_dn = "${aci_application_profile.app1.id}"
+  application_profile_dn = "${aci_application_profile.app2.id}"
   name                   = "epg2"
   relation_fv_rs_bd      = "${aci_bridge_domain.bd.name}"
   relation_fv_rs_dom_att = ["${var.vmm_domain_dn}"]
@@ -60,4 +64,16 @@ resource "aci_filter_entry" "https" {
   d_from_port = "https"
   d_to_port   = "https"
   stateful    = "yes"
+}
+
+output "app2" {
+  value = "${aci_application_profile.app2.name}"
+}
+
+output "epg1" {
+  value = "${aci_application_epg.epg1.name}"
+}
+
+output "epg2" {
+  value = "${aci_application_epg.epg2.name}"
 }

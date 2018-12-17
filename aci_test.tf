@@ -74,6 +74,13 @@ resource "aci_filter_entry" "https" {
   stateful    = "yes"
 }
 
+module "prod_app2" {
+  source = "modules/prod_app2"
+
+  tenant        = "${aci_tenant.terraform_ten.id}"
+  vmm_domain_dn = "${var.vmm_domain_dn}"
+}
+
 provider "vsphere" {
   user                 = "${var.vsphere_user}"
   password             = "${var.vsphere_password}"
@@ -86,12 +93,14 @@ data "vsphere_datacenter" "dc" {
 }
 
 data "vsphere_network" "vm1_net" {
-  name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg1.name)}"
+  depends_on    = ["module.prod_app2"]
+  name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg1)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_network" "vm2_net" {
-  name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg2.name)}"
+  depends_on    = ["module.prod_app2"]
+  name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg2)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
