@@ -5,7 +5,7 @@ variable vrf {
 }
 
 variable bd {
-  default = "bd"
+  default = "bd1"
 }
 
 variable bd_subnet {

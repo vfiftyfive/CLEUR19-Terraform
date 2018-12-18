@@ -42,7 +42,7 @@ resource "aci_application_epg" "epg2" {
 
 resource "aci_contract" "contract_epg1_epg2" {
   tenant_dn = "${aci_tenant.tenant.id}"
-  name      = "Web"
+  name      = "Web_app2"
 }
 
 resource "aci_contract_subject" "Web_subject1" {
