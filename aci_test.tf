@@ -93,13 +93,12 @@ data "vsphere_datacenter" "dc" {
 }
 
 data "vsphere_network" "vm1_net" {
-  depends_on    = ["module.prod_app2"]
+  
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg1)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_network" "vm2_net" {
-  depends_on    = ["module.prod_app2"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg2)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
@@ -120,6 +119,7 @@ data "vsphere_virtual_machine" "template" {
 }
 
 resource "vsphere_virtual_machine" "aci_vm1" {
+  depends_on    = ["module.prod_app2"]
   count            = 1
   name             = "${var.aci_vm1_name}"
   resource_pool_id = "${data.vsphere_compute_cluster.cl.resource_pool_id}"
@@ -172,6 +172,7 @@ resource "vsphere_virtual_machine" "aci_vm1" {
 }
 
 resource "vsphere_virtual_machine" "aci_vm2" {
+  depends_on    = ["module.prod_app2"]
   count            = 1
   name             = "${var.aci_vm2_name}"
   resource_pool_id = "${data.vsphere_compute_cluster.cl.resource_pool_id}"
