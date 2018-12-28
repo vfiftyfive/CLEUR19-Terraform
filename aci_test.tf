@@ -93,11 +93,13 @@ data "vsphere_datacenter" "dc" {
 }
 
 data "vsphere_network" "vm1_net" {
+  depends_on       = ["module.prod_app2"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg1)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_network" "vm2_net" {
+  depends_on       = ["module.prod_app2"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg2)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
