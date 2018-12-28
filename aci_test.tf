@@ -118,7 +118,7 @@ data "vsphere_virtual_machine" "template" {
 }
 
 resource "vsphere_virtual_machine" "aci_vm1" {
-  depends_on       = ["module.prod_app2"]
+  depends_on       = ["module.prod_app2","aci_application_epg.epg1"]
   count            = 1
   name             = "${var.aci_vm1_name}"
   resource_pool_id = "${data.vsphere_compute_cluster.cl.resource_pool_id}"
@@ -171,7 +171,7 @@ resource "vsphere_virtual_machine" "aci_vm1" {
 }
 
 resource "vsphere_virtual_machine" "aci_vm2" {
-  depends_on       = ["module.prod_app2"]
+  depends_on       = ["module.prod_app2","aci_application_epg.epg2"]
   count            = 1
   name             = "${var.aci_vm2_name}"
   resource_pool_id = "${data.vsphere_compute_cluster.cl.resource_pool_id}"
