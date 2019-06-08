@@ -2,7 +2,7 @@ provider "aci" {
   username    = "api_user"
   private_key = "${var.aci_private_key}"
   cert_name   = "${var.aci_cert_name}"
-  url         = "https://10.51.48.5"
+  url         = "${var.apic_url}"
   insecure    = true
 }
 
