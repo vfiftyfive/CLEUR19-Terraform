@@ -90,6 +90,14 @@ module "prod_app2" {
 
   tenant        = "${aci_tenant.terraform_ten.name}"
   vmm_domain_dn = "${var.vmm_domain_dn}"
+  aci_vm2_name = "${var.aci_vm2_name}"
+  aci_vm2_address = "${var.aci_vm2_address}"
+  bd_subnet = "${var.bd_subnet}"
+  vsphere_compute_cluster = "${var.vsphere_compute_cluster}"
+  aci_vm1_name = "${var.aci_vm1_name}"
+  aci_vm1_address = "${var.aci_vm1_address}"
+  gateway = "${var.gateway}"
+  folder = "${var.folder}"
 }
 
 provider "vsphere" {
@@ -104,13 +112,13 @@ data "vsphere_datacenter" "dc" {
 }
 
 data "vsphere_network" "vm1_net" {
-  depends_on       = ["module.prod_app2"]
+  depends_on       = ["null_resource.delay"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg1)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_network" "vm2_net" {
-  depends_on       = ["module.prod_app2"]
+  depends_on       = ["null_resource.delay"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, module.prod_app2.app2, module.prod_app2.epg2)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
