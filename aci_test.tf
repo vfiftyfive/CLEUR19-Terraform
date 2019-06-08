@@ -48,6 +48,17 @@ resource "aci_application_epg" "epg2" {
   relation_fv_rs_prov    = ["${aci_contract.contract_epg1_epg2.name}"]
 }
 
+resource "null_resource" delay {
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
+
+  triggers = {
+    "epg1" = "${aci_application_epg.epg1.id}"
+    "epg2" = "${aci_application_epg.epg2.id}"
+  }
+}
+
 resource "aci_contract" "contract_epg1_epg2" {
   tenant_dn = "${aci_tenant.terraform_ten.id}"
   name      = "Web"
@@ -86,13 +97,13 @@ data "vsphere_datacenter" "dc" {
 }
 
 data "vsphere_network" "vm1_net" {
-  depends_on = ["aci_application_epg.epg1"],
+  depends_on    = ["aci_application_epg.epg1"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg1.name)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_network" "vm2_net" {
-  depends_on = ["aci_application_epg.epg2"]
+  depends_on    = ["aci_application_epg.epg2"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg2.name)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
