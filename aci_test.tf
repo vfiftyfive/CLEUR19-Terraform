@@ -48,6 +48,17 @@ resource "aci_application_epg" "epg2" {
   relation_fv_rs_prov    = ["${aci_contract.contract_epg1_epg2.name}"]
 }
 
+resource "null_resource" delay {
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
+
+  triggers = {
+    "epg1" = "${aci_application_epg.epg1.id}"
+    "epg2" = "${aci_application_epg.epg2.id}"
+  }
+}
+
 resource "aci_contract" "contract_epg1_epg2" {
   tenant_dn = "${aci_tenant.terraform_ten.id}"
   name      = "Web"
