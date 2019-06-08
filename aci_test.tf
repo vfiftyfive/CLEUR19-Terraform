@@ -97,13 +97,13 @@ data "vsphere_datacenter" "dc" {
 }
 
 data "vsphere_network" "vm1_net" {
-  depends_on    = ["aci_application_epg.epg1"]
+  depends_on    = ["null_resource.delay"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg1.name)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_network" "vm2_net" {
-  depends_on    = ["aci_application_epg.epg2"]
+  depends_on    = ["null_resource.delay"]
   name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg2.name)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
